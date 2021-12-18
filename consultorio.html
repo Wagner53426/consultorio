@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultório Ondotológico</title>
+</head>
+<style>
+    body {
+        background-color: rgb(101, 109, 109);
+    }
+
+    h1 {
+        border-bottom-style: inset;
+        color:azure;
+    }
+
+    p,  h3{
+        color: azure;
+        font-size: 1.2em;
+    }
+
+    pre {
+        font-size: 1.5em;
+        color: azure;
+    }
+
+    .fonteAzul {
+        color: rgb(245, 229, 12);
+        font-size: 1.2em;
+    }
+
+    .branco {
+        color: rgb(53, 58, 61);
+        border-radius: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.90em;
+    }
+
+    .red {
+        color: red;
+        border-radius: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1em;
+    }
+
+    .blue {
+        color: blue;
+        border-radius: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.1em;
+    }
+
+    input {
+        background: rgb(243, 245, 245);
+        font-size: 1em;
+    }
+
+</style>
+<body>
+    <h1>Consultório Ondotológico</h1>
+    <p>
+        Paciente:
+        <input type="text" id="inPaciente" autofocus>
+        <input type="button" value="Adicionar" id="btAdicionar" class="branco">
+        <input type="button" value="Urgência" id="btUrgencia" class="red">
+        <input type="button" value="Atender" id="btAtender" class="blue">
+    </p>
+    <h3>Em atendimento:
+        <span id="outAtendimento" class="fonteAzul"></span>
+    </h3>
+    <pre id="outLista"></pre>
+<script>
+    var pacientes = []; // Declara vetor global
+    function adicionarPaciente() {
+        var inPaciente = document.getElementById('inPaciente');
+        var outLista = document.getElementById('outLista');
+
+        var nome = inPaciente.value;
+
+        if(nome == "") {
+            alert("Informe o nome do paciente!");
+            inPaciente.focus();
+            return;
+        }
+        pacientes.push(nome); // Adiciona o nome no final do vetor
+        var lista = ""; // String para concatenar pacientes
+
+        //Percorre os elementos do vetor
+        for(i = 0; i < pacientes.length; i++) {
+            lista += (i + 1) + ". " + pacientes[i] + "<br>";
+        }
+        //Altera o conteúdo da tag outLista
+        outLista.innerHTML = lista;
+
+        //Limpa campo e posiciona cursor em inPaciente
+        inPaciente.value = " ";
+        inPaciente.focus();
+    }
+
+    function urgenciaPaciente() {
+        var inPaciente = document.getElementById('inPaciente');
+        var outLista = document.getElementById('outLista');
+
+        var nome = inPaciente.value;
+
+        if(nome == "") {
+            alert("Informe o nome do paciente!");
+            inPaciente.focus();
+            return;
+        }
+        pacientes.unshift(nome); // Adiciona o nome no final do vetor
+        var lista = ""; // String para concatenar pacientes
+
+        //Percorre os elementos do vetor
+        for(i = 0; i < pacientes.length; i++) {
+            lista += (i + 1) + ". " + pacientes[i] + "<br>";
+        }
+        //Altera o conteúdo da tag outLista
+        outLista.innerHTML = lista;
+
+        //Limpa campo e posiciona cursor em inPaciente
+        inPaciente.value = " ";
+        inPaciente.focus();
+    }
+
+    function atendePaciente() {
+        if(pacientes.length == 0) {
+            alert("Não há pacientes na lista de espera");
+            inPaciente.focus();
+            return;
+        }
+        var outAtendimento = document.getElementById('outAtendimento');
+        var outLista = document.getElementById('outLista');
+
+        //Remove paciente do inicio da fila(e obtém nome)
+        var atender = pacientes.shift();
+
+        //Exibe nome do paciente em outAtendimento
+        outAtendimento.innerHTML = atender;
+
+        //String para concatenar pacientes
+        var lista = "";
+
+        //Percorre os elementos do vetor
+        for(i = 0; i < pacientes.length; i++) {
+            lista += (i + 1) + ". " + pacientes[i] + "<br>";
+        }
+        outLista.innerHTML = lista
+    }
+    var btAtender = document.getElementById('btAtender');
+    btAtender.addEventListener("click", atendePaciente);
+
+    var btAdicionar = document.getElementById('btAdicionar');
+    btAdicionar.addEventListener("click", adicionarPaciente);
+
+    var btUrgencia = document.getElementById('btUrgencia');
+    btUrgencia.addEventListener("click", urgenciaPaciente);
+</script>
+
+</body>
+</html>
